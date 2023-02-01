@@ -31,10 +31,10 @@ function App() {
     return validator.isEmail(email);
   };
 
-  const isValidEmail: boolean = emailValidation(input.email);
-
   const handleSubmit: (event: FormEvent<HTMLFormElement>) => void = (event) => {
     event.preventDefault();
+
+    const isValidEmail: boolean = emailValidation(input.email);
     setShowErrorMessage({
       ...showErrorMessage,
       email: !isValidEmail,
@@ -46,6 +46,14 @@ function App() {
         ...showErrorMessage,
         password: !isValidPassword,
       });
+
+      if (isValidPassword) {
+        const isValidConfirmPassword: boolean = input.password === input.confirmPassword;
+        setShowErrorMessage({
+          ...showErrorMessage,
+          confirmPassword: !isValidConfirmPassword,
+        });
+      }
     }
   };
 
@@ -82,10 +90,19 @@ function App() {
       </div>
       <div>
         <label htmlFor="confirm-password">Confirm Password</label>
-        <input type="password" id="confirm-password" name="confirm-password" />
+        <input
+          type="password"
+          id="confirm-password"
+          name="confirmPassword"
+          className="form-control"
+          value={input.confirmPassword}
+          onChange={handleChange}
+        />
       </div>
       {showErrorMessage.email && <p>The email you input is invalid</p>}
       {showErrorMessage.password && <p>The password you entered should contain 5 or more characters</p>}
+      {showErrorMessage.confirmPassword && <p>The passwords don't match. Try again.</p>}
+
       <button type="submit">Submit</button>
     </form>
   );
