@@ -21,24 +21,39 @@ function App() {
     confirmPassword: '',
   });
 
-  const [showErrorMessage, setShowErrorMessage] =
-    useState<showErrorMessageType>({
-      email: false,
-      password: false,
-      confirmPassword: false,
-    });
+  const [showErrorMessage, setShowErrorMessage] = useState<showErrorMessageType>({
+    email: false,
+    password: false,
+    confirmPassword: false,
+  });
+
+  const emailValidation = (email: string) => {
+    return validator.isEmail(email);
+  };
 
   const handleSubmit: (event: FormEvent<HTMLFormElement>) => void = (event) => {
     event.preventDefault();
     setShowErrorMessage({
       ...showErrorMessage,
-      email: !validator.isEmail(input.email),
+      email: !emailValidation(input.email),
     });
+
+    if (emailValidation(input.email)) {
+      if (input.password.length < 5) {
+        setShowErrorMessage({
+          ...showErrorMessage,
+          password: true,
+        });
+      } else {
+        setShowErrorMessage({
+          ...showErrorMessage,
+          password: false,
+        });
+      }
+    }
   };
 
-  const handleChange: (event: ChangeEvent<HTMLInputElement>) => void = (
-    event
-  ) => {
+  const handleChange: (event: ChangeEvent<HTMLInputElement>) => void = (event) => {
     setInput({
       ...input,
       [event.currentTarget.name]: event.currentTarget.value,
@@ -60,13 +75,21 @@ function App() {
       </div>
       <div>
         <label htmlFor="password">Password</label>
-        <input type="password" id="password" name="password" />
+        <input
+          type="password"
+          id="password"
+          name="password"
+          className="form-control"
+          value={input.password}
+          onChange={handleChange}
+        />
       </div>
       <div>
         <label htmlFor="confirm-password">Confirm Password</label>
         <input type="password" id="confirm-password" name="confirm-password" />
       </div>
       {showErrorMessage.email && <p>The email you input is invalid</p>}
+      {showErrorMessage.password && <p>The password you entered should contain 5 or more characters</p>}
       <button type="submit">Submit</button>
     </form>
   );

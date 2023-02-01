@@ -79,3 +79,63 @@ test('should not show email error message on valid email', () => {
   const emailErrorMessageAgain: emailErrorMessageType = screen.queryByText(/the email you input is invalid/i);
   expect(emailErrorMessageAgain).not.toBeInTheDocument();
 });
+
+test('if email valid, should show error message when password contains less than 5 characters', () => {
+  render(<App />);
+  const emailInputElement: HTMLInputElement = screen.getByRole('textbox', {
+    name: /email address/i,
+  });
+  const passwordInputElement: HTMLInputElement = screen.getByLabelText(/^password$/i);
+  const submitButtonElement: HTMLButtonElement = screen.getByRole('button', {
+    name: /submit/i,
+  });
+
+  type PasswordErrorMessageType = HTMLParagraphElement | null;
+
+  const passwordErrorMessage: PasswordErrorMessageType = screen.queryByText(
+    /the password you entered should contain 5 or more characters/i
+  );
+
+  expect(passwordErrorMessage).not.toBeInTheDocument();
+
+  userEvent.type(emailInputElement, 'wiu@gmail.com');
+  const inputPassword = 'wiu6';
+  userEvent.type(passwordInputElement, inputPassword);
+
+  userEvent.click(submitButtonElement);
+
+  const passwordErrorMessageAgain: HTMLParagraphElement = screen.getByText(
+    /the password you entered should contain 5 or more characters/i
+  );
+  expect(passwordErrorMessageAgain).toBeInTheDocument();
+});
+
+test('if email valid, should not show error message when password contains more or equal than 5 characters', () => {
+  render(<App />);
+  const emailInputElement: HTMLInputElement = screen.getByRole('textbox', {
+    name: /email address/i,
+  });
+  const passwordInputElement: HTMLInputElement = screen.getByLabelText(/^password$/i);
+  const submitButtonElement: HTMLButtonElement = screen.getByRole('button', {
+    name: /submit/i,
+  });
+
+  type PasswordErrorMessageType = HTMLParagraphElement | null;
+
+  const passwordErrorMessage: PasswordErrorMessageType = screen.queryByText(
+    /the password you entered should contain 5 or more characters/i
+  );
+
+  expect(passwordErrorMessage).not.toBeInTheDocument();
+
+  userEvent.type(emailInputElement, 'wiu@gmail.com');
+  const inputPassword = 'wiu66';
+  userEvent.type(passwordInputElement, inputPassword);
+
+  userEvent.click(submitButtonElement);
+
+  const passwordErrorMessageAgain: PasswordErrorMessageType = screen.queryByText(
+    /the password you entered should contain 5 or more characters/i
+  );
+  expect(passwordErrorMessageAgain).not.toBeInTheDocument();
+});
