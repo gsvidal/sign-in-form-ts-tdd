@@ -8,7 +8,7 @@ type InputType = {
   confirmPassword: string;
 };
 
-type showErrorMessageType = {
+type ShowErrorMessageType = {
   email: boolean;
   password: boolean;
   confirmPassword: boolean;
@@ -21,7 +21,7 @@ function App() {
     confirmPassword: '',
   });
 
-  const [showErrorMessage, setShowErrorMessage] = useState<showErrorMessageType>({
+  const [showErrorMessage, setShowErrorMessage] = useState<ShowErrorMessageType>({
     email: false,
     password: false,
     confirmPassword: false,
@@ -31,25 +31,21 @@ function App() {
     return validator.isEmail(email);
   };
 
+  const isValidEmail: boolean = emailValidation(input.email);
+
   const handleSubmit: (event: FormEvent<HTMLFormElement>) => void = (event) => {
     event.preventDefault();
     setShowErrorMessage({
       ...showErrorMessage,
-      email: !emailValidation(input.email),
+      email: !isValidEmail,
     });
 
-    if (emailValidation(input.email)) {
-      if (input.password.length < 5) {
-        setShowErrorMessage({
-          ...showErrorMessage,
-          password: true,
-        });
-      } else {
-        setShowErrorMessage({
-          ...showErrorMessage,
-          password: false,
-        });
-      }
+    if (isValidEmail) {
+      const isValidPassword: boolean = input.password.length >= 5;
+      setShowErrorMessage({
+        ...showErrorMessage,
+        password: !isValidPassword,
+      });
     }
   };
 

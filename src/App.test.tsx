@@ -80,7 +80,7 @@ test('should not show email error message on valid email', () => {
   expect(emailErrorMessageAgain).not.toBeInTheDocument();
 });
 
-test('if email valid, should show error message when password contains less than 5 characters', () => {
+test('if email valid, should show password error message when password contains less than 5 characters', () => {
   render(<App />);
   const emailInputElement: HTMLInputElement = screen.getByRole('textbox', {
     name: /email address/i,
@@ -110,7 +110,7 @@ test('if email valid, should show error message when password contains less than
   expect(passwordErrorMessageAgain).toBeInTheDocument();
 });
 
-test('if email valid, should not show error message when password contains more or equal than 5 characters', () => {
+test('if email valid, should not show password error message when password contains more or equal than 5 characters', () => {
   render(<App />);
   const emailInputElement: HTMLInputElement = screen.getByRole('textbox', {
     name: /email address/i,
