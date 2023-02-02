@@ -32,6 +32,7 @@
       text-align: left;
       font-size: 1rem;
       color: rgb(96, 96, 177);
+
       @media (min-width: 465px) {
         margin-bottom: 0;
       }
@@ -42,6 +43,11 @@
       padding: 10px 15px;
       border: 1px solid rgba(96, 96, 177, 0.432);
       border-radius: 5px;
+
+      &:focus {
+        border: 1px solid rgba(21, 21, 146, 0.432);
+        outline: 1px solid rgba(21, 21, 146, 0.432);
+      }
     }
   }
 
@@ -57,13 +63,14 @@
     color: white;
     background-color: rgb(53, 53, 187);
     border-radius: 5px;
+    cursor: pointer;
 
     &:hover {
       background-color: rgb(0, 0, 161);
     }
 
     &:active {
-      background-color: rgb(76, 76, 189);
+      background-color: rgb(104, 104, 255);
     }
   }
 }

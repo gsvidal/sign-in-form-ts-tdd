@@ -81,7 +81,7 @@ const Form = () => {
       {showSuccessMessage ? (
         <p>You signed in successfully!</p>
       ) : (
-        <div>
+        <>
           <div className="input-container">
             <label htmlFor="email">Email Address</label>
             <input
@@ -123,7 +123,7 @@ const Form = () => {
           <button type="submit" className="button">
             Submit
           </button>
-        </div>
+        </>
       )}
     </form>
   );
