@@ -41,16 +41,18 @@ const Form = () => {
     const isValidPassword: boolean = input.password.length >= 5;
 
     const isValidConfirmPassword: boolean = input.password === input.confirmPassword;
+
     if (!isValidEmail) {
       setShowErrorMessage({
-        ...showErrorMessage,
         email: true,
+        password: false,
+        confirmPassword: false,
       });
     } else if (!isValidPassword) {
       setShowErrorMessage({
-        ...showErrorMessage,
         email: false,
         password: true,
+        confirmPassword: false,
       });
     } else if (!isValidConfirmPassword) {
       setShowErrorMessage({
@@ -75,49 +77,54 @@ const Form = () => {
     });
   };
   return (
-    <form action="" onSubmit={handleSubmit} className="form">
-      <div className="input-container">
-        <label htmlFor="email">Email Address</label>
-        <input
-          type="text"
-          id="email"
-          name="email"
-          className="form-control"
-          value={input.email}
-          onChange={handleChange}
-        />
-      </div>
-      <div className="input-container">
-        <label htmlFor="password">Password</label>
-        <input
-          type="password"
-          id="password"
-          name="password"
-          className="form-control"
-          value={input.password}
-          onChange={handleChange}
-        />
-      </div>
-      <div className="input-container">
-        <label htmlFor="confirm-password">Confirm Password</label>
-        <input
-          type="password"
-          id="confirm-password"
-          name="confirmPassword"
-          className="form-control"
-          value={input.confirmPassword}
-          onChange={handleChange}
-        />
-      </div>
-      {showErrorMessage.email && <p className="error-message">The email you input is invalid</p>}
-      {showErrorMessage.password && (
-        <p className="error-message">The password you entered should contain 5 or more characters</p>
+    <form action="" onSubmit={handleSubmit} className={`form ${showSuccessMessage ? 'success' : ''}`}>
+      {showSuccessMessage ? (
+        <p>You signed in successfully!</p>
+      ) : (
+        <div>
+          <div className="input-container">
+            <label htmlFor="email">Email Address</label>
+            <input
+              type="text"
+              id="email"
+              name="email"
+              className="form-control"
+              value={input.email}
+              onChange={handleChange}
+            />
+          </div>
+          <div className="input-container">
+            <label htmlFor="password">Password</label>
+            <input
+              type="password"
+              id="password"
+              name="password"
+              className="form-control"
+              value={input.password}
+              onChange={handleChange}
+            />
+          </div>
+          <div className="input-container">
+            <label htmlFor="confirm-password">Confirm Password</label>
+            <input
+              type="password"
+              id="confirm-password"
+              name="confirmPassword"
+              className="form-control"
+              value={input.confirmPassword}
+              onChange={handleChange}
+            />
+          </div>
+          {showErrorMessage.email && <p className="error-message">The email you input is invalid</p>}
+          {showErrorMessage.password && (
+            <p className="error-message">The password you entered should contain 5 or more characters</p>
+          )}
+          {showErrorMessage.confirmPassword && <p className="error-message">The passwords don't match. Try again.</p>}
+          <button type="submit" className="button">
+            Submit
+          </button>
+        </div>
       )}
-      {showErrorMessage.confirmPassword && <p className="error-message">The passwords don't match. Try again.</p>}
-      {showSuccessMessage && <p>You signed in successfully!</p>}
-      <button type="submit" className="button">
-        Submit
-      </button>
     </form>
   );
 };
