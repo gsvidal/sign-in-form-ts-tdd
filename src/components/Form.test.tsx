@@ -39,10 +39,6 @@ test('should be able to type a password', () => {
   expect(confirmPasswordInputElement.value).toBe(inputPassword);
 });
 
-// test('submit button should be disabled when form initially renders', () => {
-
-// });
-
 test('should show email error message on invalid email', () => {
   render(<Form />);
   const emailInputElement: HTMLInputElement = screen.getByRole('textbox', {
@@ -82,6 +78,31 @@ test('should not show email error message on valid email', () => {
 
   const emailErrorMessageAgain: emailErrorMessageType = screen.queryByText(/the email you input is invalid/i);
   expect(emailErrorMessageAgain).not.toBeInTheDocument();
+});
+
+test('should not show email error message on valid email after initially input an invalid email (with its respective email error message)', () => {
+  render(<Form />);
+  const emailInputElement: HTMLInputElement = screen.getByRole('textbox', {
+    name: /email address/i,
+  });
+  const submitButtonElement: HTMLButtonElement = screen.getByRole('button', {
+    name: /submit/i,
+  });
+
+  type EmailErrorMessageType = HTMLParagraphElement | null;
+
+  userEvent.type(emailInputElement, 'wiugmail.com'); //invalid email
+  userEvent.click(submitButtonElement);
+
+  const emailErrorMessageAfterSubmit: HTMLParagraphElement = screen.getByText(/the email you input is invalid/i);
+  expect(emailErrorMessageAfterSubmit).toBeInTheDocument();
+
+  userEvent.type(emailInputElement, 'wiu@gmail.com'); //input valid email
+  userEvent.click(submitButtonElement);
+
+  const emailErrorMessageAfterSecondSubmit: EmailErrorMessageType =
+    screen.queryByText(/the email you input is invalid/i);
+  expect(emailErrorMessageAfterSecondSubmit).not.toBeInTheDocument();
 });
 
 //Password tests
@@ -246,4 +267,31 @@ test('should show password error message when email is valid and password and co
     /the password you entered should contain 5 or more characters/i
   );
   expect(passwordErrorMessageAfterSubmitElement).toBeInTheDocument();
+});
+
+test('show success message when three inputs are valid and form submitted', () => {
+  render(<Form />);
+  const emailInputElement: HTMLInputElement = screen.getByRole('textbox', {
+    name: /email address/i,
+  });
+  const passwordInputElement: HTMLInputElement = screen.getByLabelText(/^password$/i);
+  const confirmPasswordInputElement: HTMLInputElement = screen.getByLabelText(/confirm password/i);
+  const submitButtonElement: HTMLButtonElement = screen.getByRole('button', {
+    name: /submit/i,
+  });
+
+  type successMessageElementType = HTMLParagraphElement | null;
+  const successMessageElement: successMessageElementType = screen.queryByText(/You signed in successfully!/i);
+  expect(successMessageElement).not.toBeInTheDocument();
+
+  userEvent.type(emailInputElement, 'wiu@gmail.com');
+
+  const inputPasswordAndConfirmPassword = 'wiu666';
+  userEvent.type(passwordInputElement, inputPasswordAndConfirmPassword);
+  userEvent.type(confirmPasswordInputElement, inputPasswordAndConfirmPassword);
+
+  userEvent.click(submitButtonElement);
+
+  const successMessageElementAfterSubmit: HTMLParagraphElement = screen.getByText(/You signed in successfully!/i);
+  expect(successMessageElementAfterSubmit).toBeInTheDocument();
 });

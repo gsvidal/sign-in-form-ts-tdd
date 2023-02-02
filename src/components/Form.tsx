@@ -27,6 +27,8 @@ const Form = () => {
     confirmPassword: false,
   });
 
+  const [showSuccessMessage, setShowSuccessMessage] = useState<boolean>(false);
+
   const emailValidation = (email: string) => {
     return validator.isEmail(email);
   };
@@ -35,25 +37,34 @@ const Form = () => {
     event.preventDefault();
 
     const isValidEmail: boolean = emailValidation(input.email);
-    setShowErrorMessage({
-      ...showErrorMessage,
-      email: !isValidEmail,
-    });
 
-    if (isValidEmail) {
-      const isValidPassword: boolean = input.password.length >= 5;
+    const isValidPassword: boolean = input.password.length >= 5;
+
+    const isValidConfirmPassword: boolean = input.password === input.confirmPassword;
+    if (!isValidEmail) {
       setShowErrorMessage({
         ...showErrorMessage,
-        password: !isValidPassword,
+        email: true,
       });
-
-      if (isValidPassword) {
-        const isValidConfirmPassword: boolean = input.password === input.confirmPassword;
-        setShowErrorMessage({
-          ...showErrorMessage,
-          confirmPassword: !isValidConfirmPassword,
-        });
-      }
+    } else if (!isValidPassword) {
+      setShowErrorMessage({
+        ...showErrorMessage,
+        email: false,
+        password: true,
+      });
+    } else if (!isValidConfirmPassword) {
+      setShowErrorMessage({
+        email: false,
+        password: false,
+        confirmPassword: true,
+      });
+    } else {
+      setShowErrorMessage({
+        email: false,
+        password: false,
+        confirmPassword: false,
+      });
+      setShowSuccessMessage(true);
     }
   };
 
@@ -103,7 +114,7 @@ const Form = () => {
         <p className="error-message">The password you entered should contain 5 or more characters</p>
       )}
       {showErrorMessage.confirmPassword && <p className="error-message">The passwords don't match. Try again.</p>}
-
+      {showSuccessMessage && <p>You signed in successfully!</p>}
       <button type="submit" className="button">
         Submit
       </button>
