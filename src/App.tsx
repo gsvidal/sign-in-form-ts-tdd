@@ -6,8 +6,8 @@ function App() {
     <div className="app">
       <h1 className="title">Sign In Form</h1>
       <Form />
-      <span className="bg-icon-1"></span>
-      <span className="bg-icon-2"></span>
+      <span className="bg-icon bg-icon--left"></span>
+      <span className="bg-icon bg-icon--right"></span>
     </div>
   );
 }

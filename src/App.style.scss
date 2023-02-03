@@ -12,24 +12,23 @@ $bg-icons-margin: 30px;
   color: rgb(71, 71, 177);
 }
 
-.bg-icon-1 {
+.bg-icon {
   display: inline-block;
   position: absolute;
-  bottom: $bg-icons-margin;
-  left: $bg-icons-margin;
   z-index: -1;
-  width: 250px;
-  height: 250px;
   background: url('./icons/bg-sphere1.svg') center/cover no-repeat;
-}
 
-.bg-icon-2 {
-  display: inline-block;
-  position: absolute;
-  top: $bg-icons-margin;
-  right: $bg-icons-margin;
-  z-index: -1;
-  width: 150px;
-  height: 150px;
-  background: url('./icons/bg-sphere2.svg') center/cover no-repeat;
+  &--left {
+    bottom: $bg-icons-margin;
+    left: $bg-icons-margin;
+    width: 250px;
+    height: 250px;
+  }
+  &--right {
+    top: $bg-icons-margin;
+    right: $bg-icons-margin;
+    width: 150px;
+    height: 150px;
+    background-image: url('./icons/bg-sphere2.svg');
+  }
 }
